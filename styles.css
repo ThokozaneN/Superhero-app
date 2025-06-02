@@ -353,4 +353,8 @@ header {
     .hero-card {
         height: 450px;
     }
+
+    .hero-name {
+        font-size: 1.2rem;
+    }
 }
