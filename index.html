@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avengers Showcase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated Cosmic Background */
+        .cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            overflow: hidden;
+        }
+
+        /* Stars Animation */
+        @keyframes animStar {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-2000px); }
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            display: block;
+            background: url('https://assets.codepen.io/1231630/stars.png') repeat top center;
+            z-index: -1;
+            animation: animStar 200s linear infinite;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .title {
+            font-size: 4rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: linear-gradient(90deg, #ff0000, #ff8c00, #ff0, #008000, #0000ff, #4b0082);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow 10s ease infinite;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Hero Gallery Grid */
+        .hero-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Card Styles */
+        .hero-card {
+            position: relative;
+            height: 500px;
+            perspective: 1500px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 1s;
+            transform-style: preserve-3d;
+        }
+
+        .hero-card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: all 0.8s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+        }
+
+        .card-front {
+            background: rgba(20, 20, 20, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            transform-style: preserve-3d;
+        }
+
+        .hero-card:hover .card-front {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .hero-image-container {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            position: relative;
+            margin-bottom: 30px;
+            transform-style: preserve-3d;
+            transform: translateZ(50px);
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid;
+            transform: translateZ(50px);
+            transition: all 0.5s ease;
+        }
+
+        .hero-card:hover .hero-image {
+            transform: translateZ(80px) scale(1.1);
+            box-shadow: 0 0 30px currentColor;
+        }
+
+        .hero-name {
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            transform: translateZ(50px);
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        .hero-alias {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            transform: translateZ(30px);
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, rgba(30,30,30,0.9), rgba(10,10,10,0.95));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 30px;
+            transform: rotateY(180deg);
+            border: 2px solid;
+        }
+
+        .hero-fullname {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: inherit;
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        .hero-info {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .hero-abilities {
+            margin-bottom: 25px;
+        }
+
+        .ability {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .ability i {
+            margin-right: 10px;
+            color: inherit;
+        }
+
+        .power-btn {
+            padding: 12px 25px;
+            background: transparent;
+            border: 2px solid currentColor;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            margin-top: auto;
+            align-self: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .power-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: currentColor;
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .power-btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .power-btn:hover {
+            color: #000;
+        }
+
+        /* Hero Specific Styles */
+        /* Iron Man */
+        .hero-card[data-hero="ironman"] .hero-image,
+        .hero-card[data-hero="ironman"] .card-back {
+            border-color: #ff4d4d;
+            color: #ff4d4d;
+        }
+
+        .hero-card[data-hero="ironman"] .power-btn:hover {
+            text-shadow: 0 0 10px #ff4d4d;
+        }
+
+        /* Captain America */
+        .hero-card[data-hero="captainamerica"] .hero-image,
+        .hero-card[data-hero="captainamerica"] .card-back {
+            border-color: #4d4dff;
+            color: #4d4dff;
+        }
+
+        .hero-card[data-hero="captainamerica"] .power-btn:hover {
+            text-shadow: 0 0 10px #4d4dff;
+        }
+
+        /* Thor */
+        .hero-card[data-hero="thor"] .hero-image,
+        .hero-card[data-hero="thor"] .card-back {
+            border-color: #ffcc00;
+            color: #ffcc00;
+        }
+
+        .hero-card[data-hero="thor"] .power-btn:hover {
+            text-shadow: 0 0 10px #ffcc00;
+        }
+
+        /* Hulk */
+        .hero-card[data-hero="hulk"] .hero-image,
+        .hero-card[data-hero="hulk"] .card-back {
+            border-color: #00cc00;
+            color: #00cc00;
+        }
+
+        .hero-card[data-hero="hulk"] .power-btn:hover {
+            text-shadow: 0 0 10px #00cc00;
+        }
+
+        /* Black Widow */
+        .hero-card[data-hero="blackwidow"] .hero-image,
+        .hero-card[data-hero="blackwidow"] .card-back {
+            border-color: #ff3399;
+            color: #ff3399;
+        }
+
+        .hero-card[data-hero="blackwidow"] .power-btn:hover {
+            text-shadow: 0 0 10px #ff3399;
+        }
+
+        /* Hawkeye */
+        .hero-card[data-hero="hawkeye"] .hero-image,
+        .hero-card[data-hero="hawkeye"] .card-back {
+            border-color: #9933ff;
+            color: #9933ff;
+        }
+
+        .hero-card[data-hero="hawkeye"] .power-btn:hover {
+            text-shadow: 0 0 10px #9933ff;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px) rotateY(0deg); }
+            50% { transform: translateY(-20px) rotateY(5deg); }
+            100% { transform: translateY(0px) rotateY(0deg); }
+        }
+
+        .hero-card {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-card:nth-child(2) { animation-delay: 0.2s; }
+        .hero-card:nth-child(3) { animation-delay: 0.4s; }
+        .hero-card:nth-child(4) { animation-delay: 0.6s; }
+        .hero-card:nth-child(5) { animation-delay: 0.8s; }
+        .hero-card:nth-child(6) { animation-delay: 1s; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-gallery {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .hero-card {
+                height: 450px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-background">
+        <div class="stars"></div>
+    </div>
+    
+    <header>
+        <h1 class="title">AVENGERS ASSEMBLE</h1>
+        <p class="subtitle">Earth's Mightiest Heroes - Click on any hero to reveal their secrets</p>
+    </header>
+    
+    <main class="hero-gallery">
+        <!-- Iron Man -->
+        <div class="hero-card" data-hero="ironman">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="hero-image-container">
+                        <img src="images/ironman.jpg" alt="Iron Man" class="hero-image">
+                    </div>
+                    <h2 class="hero-name">Iron Man</h2>
+                    <p class="hero-alias">Tony Stark</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="hero-fullname">Anthony Edward Stark</h3>
+                    <p class="hero-info">Genius, billionaire, playboy, philanthropist. Tony Stark created the Iron Man suit to escape captivity and has since upgraded it to become one of Earth's most powerful defenders.</p>
+                    <div class="hero-abilities">
+                        <div class="ability"><i class="fas fa-brain"></i> Genius-Level Intellect</div>
+                        <div class="ability"><i class="fas fa-robot"></i> Advanced Armor Suit</div>
+                        <div class="ability"><i class="fas fa-rocket"></i> Flight & Repulsor Beams</div>
+                    </div>
+                    <button class="power-btn">Activate Repulsors</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Captain America -->
+        <div class="hero-card" data-hero="captainamerica">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="hero-image-container">
+                        <img src="images/captain.jpg" alt="Captain America" class="hero-image">
+                    </div>
+                    <h2 class="hero-name">Captain America</h2>
+                    <p class="hero-alias">Steve Rogers</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="hero-fullname">Steven Grant Rogers</h3>
+                    <p class="hero-info">Recipient of the Super-Soldier serum during World War II, Captain America is a living legend who fights for freedom and justice. His vibranium shield is nearly indestructible.</p>
+                    <div class="hero-abilities">
+                        <div class="ability"><i class="fas fa-shield-alt"></i> Master Tactician</div>
+                        <div class="ability"><i class="fas fa-running"></i> Peak Human Condition</div>
+                        <div class="ability"><i class="fas fa-fist-raised"></i> Enhanced Strength</div>
+                    </div>
+                    <button class="power-btn">Shield Throw</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Thor -->
+        <div class="hero-card" data-hero="thor">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="hero-image-container">
+                        <img src="images/thor.jpg" alt="Thor" class="hero-image">
+                    </div>
+                    <h2 class="hero-name">Thor</h2>
+                    <p class="hero-alias">God of Thunder</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="hero-fullname">Thor Odinson</h3>
+                    <p class="hero-info">The Asgardian god of thunder who wields the mighty hammer Mjolnir (and later Stormbreaker). Thor possesses superhuman strength, endurance, and the ability to control lightning.</p>
+                    <div class="hero-abilities">
+                        <div class="ability"><i class="fas fa-bolt"></i> Weather Manipulation</div>
+                        <div class="ability"><i class="fas fa-hammer"></i> Mjolnir/Stormbreaker</div>
+                        <div class="ability"><i class="fas fa-globe-europe"></i> Longevity</div>
+                    </div>
+                    <button class="power-btn">Summon Lightning</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hulk -->
+        <div class="hero-card" data-hero="hulk">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="hero-image-container">
+                        <img src="images/hulk.jpg" alt="Hulk" class="hero-image">
+                    </div>
+                    <h2 class="hero-name">Hulk</h2>
+                    <p class="hero-alias">Bruce Banner</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="hero-fullname">Robert Bruce Banner</h3>
+                    <p class="hero-info">When angered, the brilliant but emotionally reserved Dr. Bruce Banner transforms into the incredibly powerful and rage-fueled Hulk. His strength increases with his anger level.</p>
+                    <div class="hero-abilities">
+                        <div class="ability"><i class="fas fa-atom"></i> Gamma Radiation</div>
+                        <div class="ability"><i class="fas fa-hand-rock"></i> Unlimited Strength</div>
+                        <div class="ability"><i class="fas fa-heartbeat"></i> Rapid Healing</div>
+                    </div>
+                    <button class="power-btn">Hulk Smash!</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Black Widow -->
+        <div class="hero-card" data-hero="blackwidow">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="hero-image-container">
+                        <img src="images/black-widow.jpg" alt="Black Widow" class="hero-image">
+                    </div>
+                    <h2 class="hero-name">Black Widow</h2>
+                    <p class="hero-alias">Natasha Romanoff</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="hero-fullname">Natalia Alianovna Romanova</h3>
+                    <p class="hero-info">A highly trained spy and assassin, Black Widow is skilled in many forms of martial arts and armed combat. She has been enhanced by the Soviet version of the Super-Soldier program.</p>
+                    <div class="hero-abilities">
+                        <div class="ability"><i class="fas fa-user-secret"></i> Master Spy</div>
+                        <div class="ability"><i class="fas fa-hand-holding-heart"></i> Enhanced Immunity</div>
+                        <div class="ability"><i class="fas fa-fighter-jet"></i> Expert Pilot</div>
+                    </div>
+                    <button class="power-btn">Widow's Bite</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hawkeye -->
+        <div class="hero-card" data-hero="hawkeye">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="hero-image-container">
+                        <img src="images/hawkeye.jpg" alt="Hawkeye" class="hero-image">
+                    </div>
+                    <h2 class="hero-name">Hawkeye</h2>
+                    <p class="hero-alias">Clint Barton</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="hero-fullname">Clinton Francis Barton</h3>
+                    <p class="hero-info">A master marksman and archer, Hawkeye has no superhuman powers but uses his incredible accuracy to take down enemies from a distance. He's also skilled in hand-to-hand combat.</p>
+                    <div class="hero-abilities">
+                        <div class="ability"><i class="fas fa-bullseye"></i> Perfect Accuracy</div>
+                        <div class="ability"><i class="fas fa-arrows-alt"></i> Trick Arrows</div>
+                        <div class="ability"><i class="fas fa-eye"></i> Enhanced Vision</div>
+                    </div>
+                    <button class="power-btn">Trick Shot</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add power activation effects
+            document.querySelectorAll('.power-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const card = this.closest('.hero-card');
+                    const hero = card.dataset.hero;
+                    
+                    // Create power effect
+                    const effect = document.createElement('div');
+                    effect.className = 'power-effect';
+                    effect.style.position = 'absolute';
+                    effect.style.width = '100%';
+                    effect.style.height = '100%';
+                    effect.style.top = '0';
+                    effect.style.left = '0';
+                    effect.style.pointerEvents = 'none';
+                    effect.style.zIndex = '10';
+                    
+                    // Hero-specific effects
+                    switch(hero) {
+                        case 'ironman':
+                            effect.innerHTML = `
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                                width: 300px; height: 300px; border-radius: 50%; 
+                                background: radial-gradient(circle, rgba(255,77,77,0.8), transparent 70%);
+                                animation: repulsorBlast 0.8s forwards;"></div>
+                            `;
+                            break;
+                            
+                        case 'captainamerica':
+                            effect.innerHTML = `
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(0deg); 
+                                width: 200px; height: 200px; background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"%234d4dff\" /><polygon points=\"50,5 60,40 95,50 60,60 50,95 40,60 5,50 40,40\" fill=\"white\"/></svg>') no-repeat center center;
+                                animation: shieldSpin 1s linear forwards;"></div>
+                            `;
+                            break;
+                            
+                        case 'thor':
+                            effect.innerHTML = `
+                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+                                background: linear-gradient(to bottom, transparent, rgba(255,204,0,0.3));
+                                animation: lightningFlash 0.5s linear forwards;">
+                                    <div style="position: absolute; top: 20%; left: 50%; width: 4px; height: 60%; 
+                                    background: linear-gradient(to bottom, #fff, #ffcc00); 
+                                    transform: translateX(-50%); opacity: 0;
+                                    animation: lightningBolt 0.3s 0.2s forwards;"></div>
+                                </div>
+                            `;
+                            break;
+                            
+                        case 'hulk':
+                            effect.innerHTML = `
+                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+                                background: radial-gradient(circle, rgba(0,204,0,0.5), transparent 70%);
+                                animation: hulkSmash 0.5s forwards;">
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                                    font-size: 3rem; font-weight: bold; color: #00cc00; opacity: 0;
+                                    animation: smashText 0.5s 0.2s forwards;">SMASH!</div>
+                                </div>
+                            `;
+                            break;
+                            
+                        case 'blackwidow':
+                            effect.innerHTML = `
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                                width: 200px; height: 200px; border-radius: 50%; 
+                                background: radial-gradient(circle, rgba(255,51,153,0.5), transparent 70%);
+                                animation: widowBite 0.8s forwards;"></div>
+                            `;
+                            break;
+                            
+                        case 'hawkeye':
+                            effect.innerHTML = `
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                                width: 200px; height: 200px; 
+                                background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><path d=\"M10,50 L90,50 M50,10 L50,90 M20,20 L80,80 M80,20 L20,80\" stroke=\"%239933ff\" stroke-width=\"3\" fill=\"none\" /></svg>') no-repeat center center;
+                                opacity: 0;
+                                animation: bullseyeAppear 0.5s forwards;"></div>
+                            `;
+                            break;
+                    }
+                    
+                    card.appendChild(effect);
+                    
+                    // Remove effect after animation
+                    setTimeout(() => {
+                        effect.remove();
+                    }, 1000);
+                });
+            });
+            
+            // Add floating animation to cards
+            const cards = document.querySelectorAll('.hero-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+            });
+            
+            // Add CSS for power effects
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes repulsorBlast {
+                    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+                    100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+                }
+                
+                @keyframes shieldSpin {
+                    0% { transform: translate(-50%, -50%) rotate(0deg) scale(0); opacity: 0; }
+                    50% { transform: translate(-50%, -50%) rotate(180deg) scale(1); opacity: 1; }
+                    100% { transform: translate(-50%, -50%) rotate(360deg) scale(0); opacity: 0; }
+                }
+                
+                @keyframes lightningFlash {
+                    0% { opacity: 0; }
+                    20% { opacity: 1; }
+                    100% { opacity: 0; }
+                }
+                
+                @keyframes lightningBolt {
+                    0% { opacity: 0; height: 0%; }
+                    50% { opacity: 1; height: 60%; }
+                    100% { opacity: 0; height: 0%; }
+                }
+                
+                @keyframes hulkSmash {
+                    0% { transform: scale(1); opacity: 0; }
+                    50% { transform: scale(1.1); opacity: 1; }
+                    100% { transform: scale(1); opacity: 0; }
+                }
+                
+                @keyframes smashText {
+                    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+                    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+                    100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+                }
+                
+                @keyframes widowBite {
+                    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+                    70% { opacity: 1; }
+                    100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+                }
+                
+                @keyframes bullseyeAppear {
+                    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+                    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+                    100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
